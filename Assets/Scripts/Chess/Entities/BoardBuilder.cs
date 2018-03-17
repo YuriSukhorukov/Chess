@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Chess.Interfaces;
+using Assets.Scripts.Chess.Repositories;
 using Chess.Interfaces;
 using UnityEngine;
 
@@ -14,8 +15,9 @@ namespace Assets.Scripts.Chess.Entities
 			var board = GameObject.Find("Chees Board").GetComponent<IBoard>();
 			
 			//Создание конствукторов ячеек и фигур
+			var figuresData = GameObject.Find("FiguresData").GetComponent<FiguresComponentsSetsContainersRepository>();
+			IConstructor<IFigure> figureConstructor = new FigureConstructor(figuresData);
 			IConstructor<ICell> cellConstructor = new CellConstructor();
-			IConstructor<IFigure> figureConstructor = new FigureConstructor();
 			
 			//Создание расстановщиков белых и черных фигур
 			IArranger<IFigure[], ICell[,]> arrangerWhiteFigures = new FiguresWhiteToCellsArranger<IFigure, ICell>();

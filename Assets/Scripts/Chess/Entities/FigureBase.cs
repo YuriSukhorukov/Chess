@@ -8,11 +8,8 @@ using UnityEngine;
 namespace Assets.Scripts.Chess.Entities
 {
 	public abstract class FigureBase : MonoBehaviour, ISelectable, IFigure
-	{
-		public FigureColor figureColor;
-		
+	{	
 		public event EventHandler FigureTakenEventHandler;
-		public event EventHandler FigureDropedEventHandler;
 		public event EventHandler MoveCompleteEventHandler;
 
 		public ICell InCell { get; private set; }
@@ -23,7 +20,6 @@ namespace Assets.Scripts.Chess.Entities
 		public void SetupColor(FigureColor fColor)
 		{
 			FigureColor = fColor;
-			figureColor = FigureColor;
 		}
 
 		public bool IsColor(FigureColor fColor)
@@ -35,17 +31,6 @@ namespace Assets.Scripts.Chess.Entities
 		{
 			if (FigureTakenEventHandler != null)
 				FigureTakenEventHandler.Invoke(this, new EventArgs());
-		}
-
-		public void Deselect()
-		{
-			if(FigureDropedEventHandler != null)
-				FigureDropedEventHandler.Invoke(this, new EventArgs());
-		}
-
-		public void OnMoveComplete()
-		{
-			throw new NotImplementedException();
 		}
 
 		public void PutInCell(ICell cell)

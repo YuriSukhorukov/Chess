@@ -10,11 +10,16 @@ using UnityEngine.UI;
 namespace Assets.Scripts.Chess.Entities
 {
 	public class FigureConstructor : IConstructor<IFigure> {
+		private IDataRepository<FigureComponentsSet> FiguresComponentsRepository { get; set; }
+		
+		public FigureConstructor(IDataRepository<FigureComponentsSet> figureComponents)
+		{
+			FiguresComponentsRepository = figureComponents;
+		}
+
 		public IFigure Construct(Vector3 position, GameObject parent, string name)
 		{
 //			Берем коллекцию компонентов для конкретной фигуры
-			IDataRepository<FigureComponentsSet> figuresComponentsRepository =
-				GameObject.Find("FiguresData").GetComponent<FiguresComponentsSetsContainersRepository>();
 
 			int firstRang = 0;
 			if (name.Contains("white"))
@@ -24,7 +29,7 @@ namespace Assets.Scripts.Chess.Entities
 			
 			int figureIndex = Int32.Parse(Regex.Match(name, @"\d+").Value);
 			
-			FigureComponentsSet components = figuresComponentsRepository.GetData(firstRang, figureIndex);
+			FigureComponentsSet components = FiguresComponentsRepository.GetData(firstRang, figureIndex);
 			
 //			Добавить поведение для конкретной фигуры
 			var figureGo = new GameObject(components.behaviour + "_" + name);

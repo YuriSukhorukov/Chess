@@ -16,7 +16,7 @@ namespace Assets.Scripts.Chess.Behaviours
 
             const int i = 1;
 
-            switch (figureColor)
+            switch (FigureColor)
             {
                 case FigureColor.WHITE:
                     if (InCell.J + i < board.Cells.GetLength(1))

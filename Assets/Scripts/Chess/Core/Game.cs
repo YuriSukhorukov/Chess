@@ -64,7 +64,7 @@ namespace Assets.Scripts.Chess.Core
                     {
                         if (SelectedFigure == null) return;
                         
-                        if (ActiveFiguresColor == SelectedFigure.figureColor)
+                        if (ActiveFiguresColor == SelectedFigure.FigureColor)
                             SelectedFigure.MoveToCellInBoard(_board.Cells[_i, _j], _board);
                     };
                 }
