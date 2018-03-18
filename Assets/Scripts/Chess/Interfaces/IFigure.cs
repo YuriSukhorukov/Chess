@@ -7,7 +7,7 @@ namespace Chess.Interfaces
 {
     public interface IFigure
     {
-        event EventHandler FigureTakenEventHandler;
+        event EventHandler FigureSelectEventHandler;
         event EventHandler MoveCompleteEventHandler;
 
         void MoveToCellInBoard(ICell cell, IBoard board);

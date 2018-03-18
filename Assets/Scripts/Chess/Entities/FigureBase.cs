@@ -9,7 +9,7 @@ namespace Assets.Scripts.Chess.Entities
 {
 	public abstract class FigureBase : MonoBehaviour, ISelectable, IFigure
 	{	
-		public event EventHandler FigureTakenEventHandler;
+		public event EventHandler FigureSelectEventHandler;
 		public event EventHandler MoveCompleteEventHandler;
 
 		public ICell InCell { get; private set; }
@@ -29,8 +29,8 @@ namespace Assets.Scripts.Chess.Entities
 
 		public void Select()
 		{
-			if (FigureTakenEventHandler != null)
-				FigureTakenEventHandler.Invoke(this, new EventArgs());
+			if (FigureSelectEventHandler != null)
+				FigureSelectEventHandler.Invoke(this, new EventArgs());
 		}
 
 		public void PutInCell(ICell cell)
