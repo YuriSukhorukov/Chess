@@ -6,7 +6,7 @@ namespace Assets.Scripts.Chess.Interfaces
 {
     public interface ICell
     {
-        event EventHandler SelectEventHandler;
+        event Action<int, int> SelectEventHandler;
         
         void PutFigure(IFigure figure);
         

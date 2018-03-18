@@ -23,7 +23,7 @@ namespace Assets.Scripts.Chess.Core
 
 //           Создание строителя шахматной доски.
 //           Создание доски.
-//           Создание объектв для выбора фигур и ячеек.
+//           Создание объектов для выбора фигур и ячеек.
 
             _boardBuilder = new BoardBuilder();
             _board = _boardBuilder.Build();
@@ -33,7 +33,7 @@ namespace Assets.Scripts.Chess.Core
             SubscribeToCells();
             SubscribeToFigures();
 
-//          Первыми ходя белые
+//          Первыми ходят белые
             ActiveFiguresColor = FigureColor.WHITE;
         }
 
@@ -59,7 +59,7 @@ namespace Assets.Scripts.Chess.Core
                     int _i = i;
                     int _j = j;
 
-                    _board.Cells[i, j].SelectEventHandler += (s, e) => { CellSelectEventHandler(_i, _j); };
+                    _board.Cells[i, j].SelectEventHandler += CellSelectEventHandler;
                 }
             }
         }
@@ -71,15 +71,15 @@ namespace Assets.Scripts.Chess.Core
             {
                 var f1 = f;
                 
-                f.MoveCompleteEventHandler += (s, e) => { FigureMoveCompleteEventHandler(f1); };
-                f.FigureSelectEventHandler += (s, e) => { FigureSelectEventHandler(f1); };
+                f.MoveCompleteEventHandler += FigureMoveCompleteEventHandler;
+                f.FigureSelectEventHandler += FigureSelectEventHandler;
             }
             foreach (var f in _board.FiguresBlack)
             {
                 var f1 = f;
                 
-                f.MoveCompleteEventHandler += (s, e) => { FigureMoveCompleteEventHandler(f1); };
-                f.FigureSelectEventHandler += (s, e) => { FigureSelectEventHandler(f1); };
+                f.MoveCompleteEventHandler += FigureMoveCompleteEventHandler;
+                f.FigureSelectEventHandler += FigureSelectEventHandler;
             }
         }
 
@@ -93,7 +93,7 @@ namespace Assets.Scripts.Chess.Core
         }
 
 //      Обработка события завершения хода
-        private void FigureMoveCompleteEventHandler(IFigure figure)
+        private void FigureMoveCompleteEventHandler()
         {
             ActiveFiguresColor = ActiveFiguresColor == FigureColor.BLACK ? FigureColor.WHITE : FigureColor.BLACK;
             SelectedFigure = null;

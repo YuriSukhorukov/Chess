@@ -10,14 +10,14 @@ namespace Assets.Scripts.Chess.Entities
         public int I { get; private set; }
         public int J { get; private set; }
         
-        public event EventHandler SelectEventHandler;
+        public event Action<int, int> SelectEventHandler;
 
         private IFigure _figure;
         
         public void Select()
         {
             if(SelectEventHandler != null)
-                SelectEventHandler.Invoke(this, new EventArgs());
+                SelectEventHandler(I, J);
         }
 
         public bool IsFree()

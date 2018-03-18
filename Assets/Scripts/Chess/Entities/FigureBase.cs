@@ -8,9 +8,9 @@ using UnityEngine;
 namespace Assets.Scripts.Chess.Entities
 {
 	public abstract class FigureBase : MonoBehaviour, ISelectable, IFigure
-	{	
-		public event EventHandler FigureSelectEventHandler;
-		public event EventHandler MoveCompleteEventHandler;
+	{
+		public event Action<IFigure> FigureSelectEventHandler;
+		public event Action MoveCompleteEventHandler;
 
 		public ICell InCell { get; private set; }
 		public FigureColor FigureColor { get; private set; }
@@ -30,7 +30,7 @@ namespace Assets.Scripts.Chess.Entities
 		public void Select()
 		{
 			if (FigureSelectEventHandler != null)
-				FigureSelectEventHandler.Invoke(this, new EventArgs());
+				FigureSelectEventHandler(this);
 		}
 
 		public void PutInCell(ICell cell)
@@ -46,9 +46,9 @@ namespace Assets.Scripts.Chess.Entities
 
 			transform.position = InCell.GetPosition();
 			transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, -1);
-				
-			if(MoveCompleteEventHandler != null)
-				MoveCompleteEventHandler.Invoke(this, new EventArgs());
+
+			if (MoveCompleteEventHandler != null)
+				MoveCompleteEventHandler();
 		}
 
 		public void MoveToCellInBoard(ICell cell, IBoard board)
