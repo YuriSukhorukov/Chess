@@ -8,67 +8,63 @@ namespace Assets.Scripts.Chess.Behaviours
 {
     public class Pawn : FigureBase
     {
+        private IBoard _board;
         private bool _isFirstStep = true;
 
         public override void GetAvalableCellsForMove(IBoard board)
         {
+            if (this._board == null)
+                this._board = board;
+            
             AvalableCellsForMove.Clear();
-
-            const int i = 1;
 
             switch (FigureColor)
             {
                 case FigureColor.WHITE:
-                    if (InCell.J + i < board.Cells.GetLength(1))
-                        if (board.Cells[InCell.I, InCell.J + i].IsFree())
-                            AvalableCellsForMove.Add(board.Cells[InCell.I, InCell.J + i]);
 
-                    if (_isFirstStep)
-                        if (InCell.J + 2 < board.Cells.GetLength(1))
-                            if (board.Cells[InCell.I, InCell.J + 1].IsFree())
-                                AvalableCellsForMove.Add(board.Cells[InCell.I, InCell.J + 2]);
+                    MoveTo(0, _isFirstStep ? 2 : 1);
 
-                    if (InCell.I + i < board.Cells.GetLength(0) && InCell.J + i < board.Cells.GetLength(1))
-                        if (!board.Cells[InCell.I + i, InCell.J + i].IsFree())
-                            AvalableCellsForMove.Add(board.Cells[InCell.I + i, InCell.J + i]);
-                    if (InCell.I - i >= 0 && InCell.J + i < board.Cells.GetLength(1))
-                        if (!board.Cells[InCell.I - i, InCell.J + i].IsFree())
-                            AvalableCellsForMove.Add(board.Cells[InCell.I - i, InCell.J + i]);
-                    if (InCell.I - i >= 0 && InCell.J - i >= 0)
-                        if (!board.Cells[InCell.I - i, InCell.J - i].IsFree())
-                            AvalableCellsForMove.Add(board.Cells[InCell.I - i, InCell.J - i]);
-                    if (InCell.I + i < board.Cells.GetLength(0) && InCell.J - i >= 0)
-                        if (!board.Cells[InCell.I + i, InCell.J - i].IsFree())
-                            AvalableCellsForMove.Add(board.Cells[InCell.I + i, InCell.J - i]);
+                    MoveTo(0, 1);
+                    MoveTo(1, -1);
+                    MoveTo(-1, 1);
+                    MoveTo(1, 1);
+                    MoveTo(-1, -1);
+
                     break;
                 case FigureColor.BLACK:
-                    if (InCell.J - i >= 0)
-                        if (board.Cells[InCell.I, InCell.J - i].IsFree())
-                            AvalableCellsForMove.Add(board.Cells[InCell.I, InCell.J - i]);
 
-                    if (_isFirstStep)
-                        if (InCell.J - 2 >= 0)
-                            if (board.Cells[InCell.I, InCell.J - 1].IsFree())
-                                AvalableCellsForMove.Add(board.Cells[InCell.I, InCell.J - 2]);
+                    MoveTo(0, _isFirstStep ? -2 : -1);
 
-                    if (InCell.I + i < board.Cells.GetLength(0) && InCell.J + i < board.Cells.GetLength(1))
-                        if (!board.Cells[InCell.I + i, InCell.J + i].IsFree())
-                            AvalableCellsForMove.Add(board.Cells[InCell.I + i, InCell.J + i]);
-                    if (InCell.I - i >= 0 && InCell.J + i < board.Cells.GetLength(1))
-                        if (!board.Cells[InCell.I - i, InCell.J + i].IsFree())
-                            AvalableCellsForMove.Add(board.Cells[InCell.I - i, InCell.J + i]);
-                    if (InCell.I - i >= 0 && InCell.J - i >= 0)
-                        if (!board.Cells[InCell.I - i, InCell.J - i].IsFree())
-                            AvalableCellsForMove.Add(board.Cells[InCell.I - i, InCell.J - i]);
-                    if (InCell.I + i < board.Cells.GetLength(0) && InCell.J - i >= 0)
-                        if (!board.Cells[InCell.I + i, InCell.J - i].IsFree())
-                            AvalableCellsForMove.Add(board.Cells[InCell.I + i, InCell.J - i]);
+                    MoveTo(1, -1);
+                    MoveTo(-1, 1);
+                    MoveTo(1, 1);
+                    MoveTo(-1, -1);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
-
+        }
+        
+        private void MoveTo(int i = 0, int j = 0)
+        {
             _isFirstStep = false;
+            
+            if(i > 0)
+                if(InCell.I + i >= _board.Cells.GetLength(0)) return;
+            if(j > 0)
+                if(InCell.J + j >= _board.Cells.GetLength(1)) return;
+                
+            if(i < 0)
+                if(InCell.I - i < 0) return;
+            if(j < 0)
+                if(InCell.J - j < 0) return;
+
+            if (i > 0 && j > 0 || i > 0 && j < 0 || i < 0 && j < 0 || i < 0 && j > 0)
+            {
+                if (!_board.Cells[InCell.I + i, InCell.J + j].IsFree())
+                    AvalableCellsForMove.Add(_board.Cells[InCell.I + i, InCell.J + j]);
+            }
+            else
+                if (_board.Cells[InCell.I + i, InCell.J + j].IsFree())
+                    AvalableCellsForMove.Add(_board.Cells[InCell.I + i, InCell.J + j]);
         }
     }
 }
