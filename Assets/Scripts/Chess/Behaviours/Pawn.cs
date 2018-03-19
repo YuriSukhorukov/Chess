@@ -44,15 +44,17 @@ namespace Assets.Scripts.Chess.Behaviours
 
             if (InCell.I + i >= _board.Cells.GetLength(0) || InCell.I + i < 0) return;
             if (InCell.J + j >= _board.Cells.GetLength(1) || InCell.J + j < 0) return;
-                
-            if (i > 0 && j > 0 || i > 0 && j < 0 || i < 0 && j < 0 || i < 0 && j > 0)
+
+            if (i == j || i == -j)
             {
                 if (!_board.Cells[InCell.I + i, InCell.J + j].IsFree())
                     AvalableCellsForMove.Add(_board.Cells[InCell.I + i, InCell.J + j]);
             }
             else
+            {
                 if (_board.Cells[InCell.I + i, InCell.J + j].IsFree())
                     AvalableCellsForMove.Add(_board.Cells[InCell.I + i, InCell.J + j]);
+            }
         }
     }
 }
