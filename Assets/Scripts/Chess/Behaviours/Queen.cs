@@ -6,82 +6,49 @@ namespace Assets.Scripts.Chess.Behaviours
 {
     public class Queen : FigureBase
     {
+        private IBoard _board;
+        
         public override void GetAvalableCellsForMove(IBoard board)
         {
+            if (this._board == null)
+                this._board = board;
+            
             if (InCell == null) return;
 
             AvalableCellsForMove.Clear();
 
-            int i = InCell.I + 1;
-            while(i < board.Cells.GetLength(0))
-            {
-                AvalableCellsForMove.Add(board.Cells[i, InCell.J]);
-                if(!board.Cells[i, InCell.J].IsFree())
-                    break;
-                i++;
-            }
-
-            i = InCell.I - 1;
-            while (i >= 0)
-            {
-                AvalableCellsForMove.Add(board.Cells[i, InCell.J]);
-                if(!board.Cells[i, InCell.J].IsFree())
-                    break;
-                i--;
-            }
-
-            int j = InCell.J + 1;
-            while (j < board.Cells.GetLength(1))
-            {
-                AvalableCellsForMove.Add(board.Cells[InCell.I, j]);
-                if(!board.Cells[InCell.I, j].IsFree())
-                    break;
-                j++;
-            }
-
-            j = InCell.J - 1;
-            while (j >= 0)
-            {
-                AvalableCellsForMove.Add(board.Cells[InCell.I, j]);
-                if(!board.Cells[InCell.I, j].IsFree())
-                    break;
-                j--;
-            }
+//          Поиск ходов по прямой
+            MoveTo(1,0);
+            MoveTo(-1,0);
+            MoveTo(0,1);
+            MoveTo(0,-1);
             
-            int k = 1;
-            while (InCell.I + k < board.Cells.GetLength(0) && InCell.J + k < board.Cells.GetLength(1))
-            {
-                AvalableCellsForMove.Add(board.Cells[InCell.I + k, InCell.J + k]);
-                if(!board.Cells[InCell.I + k, InCell.J + k].IsFree())
-                    break;
-                k++;
-            }
-            
-            k = 1;
-            while (InCell.I - k >= 0 && InCell.J - k >= 0)
-            {
-                AvalableCellsForMove.Add(board.Cells[InCell.I - k, InCell.J - k]);
-                if(!board.Cells[InCell.I - k, InCell.J - k].IsFree())
-                    break;
-                k++;
-            }
+//          Поиск ходов по диагонали
+            MoveTo(1,1);
+            MoveTo(-1,-1);
+            MoveTo(-1,1);
+            MoveTo(1,-1);
+        }
+        
+        private void MoveTo(int i, int j)
+        {
+            if(i > 0)
+                if(InCell.I + i >= _board.Cells.GetLength(0)) return;
+            if(j > 0)
+                if(InCell.J + j >= _board.Cells.GetLength(1)) return;
+                
+            if(i < 0)
+                if(InCell.I - i < 0) return;
+            if(j < 0)
+                if(InCell.J - j < 0) return;
 
-            k = 1;
-            while (InCell.I - k >= 0 && InCell.J + k < board.Cells.GetLength(1))
+            for (int _i = InCell.I + i, _j = InCell.J + j;
+                0 < _i && _i < _board.Cells.GetLength(0) && 0 < _j && _j < _board.Cells.GetLength(0);
+                _i += i, _j += j)
             {
-                AvalableCellsForMove.Add(board.Cells[InCell.I - k, InCell.J + k]);
-                if(!board.Cells[InCell.I - k, InCell.J + k].IsFree())
+                AvalableCellsForMove.Add(_board.Cells[_i, _j]);
+                if (!_board.Cells[_i, _j].IsFree())
                     break;
-                k++;
-            }
-            
-            k = 1;
-            while (InCell.I + k < board.Cells.GetLength(0) && InCell.J - k >= 0)
-            {
-                AvalableCellsForMove.Add(board.Cells[InCell.I + k, InCell.J - k]);
-                if(!board.Cells[InCell.I + k, InCell.J - k].IsFree())
-                    break;
-                k++;
             }
         }
     }
