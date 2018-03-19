@@ -32,15 +32,8 @@ namespace Assets.Scripts.Chess.Behaviours
         
         private void MoveTo(int i, int j)
         {
-            if(i > 0)
-                if(InCell.I + i >= _board.Cells.GetLength(0)) return;
-            if(j > 0)
-                if(InCell.J + j >= _board.Cells.GetLength(1)) return;
-                
-            if(i < 0)
-                if(InCell.I - i < 0) return;
-            if(j < 0)
-                if(InCell.J - j < 0) return;
+            if (InCell.I + i >= _board.Cells.GetLength(0) || InCell.I + i < 0) return;
+            if (InCell.J + j >= _board.Cells.GetLength(1) || InCell.J + j < 0) return;
 
             for (int _i = InCell.I + i, _j = InCell.J + j;
                 0 < _i && _i < _board.Cells.GetLength(0) && 0 < _j && _j < _board.Cells.GetLength(0);
